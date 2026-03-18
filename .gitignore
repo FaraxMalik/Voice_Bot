@@ -1,0 +1,41 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Model weights (too large for git — mount as Docker volume)
+ljspeech_model/*.pth
+ljspeech_model/*.wav
+
+# Temporary audio files
+tmp/
+*.tmp
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+logs/
+*.log

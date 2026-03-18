@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Voice Agent – Client Proposal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #ffffff;
+      color: #111111;
+      font-size: 14px;
+      line-height: 1.8;
+      padding: 60px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .doc-header {
+      border-bottom: 2px solid #111;
+      padding-bottom: 20px;
+      margin-bottom: 36px;
+    }
+    .doc-header .label {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .doc-header h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #111;
+      margin-bottom: 10px;
+    }
+    .doc-header .summary {
+      font-size: 14px;
+      color: #333;
+      max-width: 720px;
+    }
+    .doc-header .meta {
+      margin-top: 14px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      color: #777;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 44px;
+    }
+    .section-number {
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    .section h2 {
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .section p {
+      color: #222;
+      margin-bottom: 12px;
+    }
+
+    /* Pipeline */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 0;
+      margin: 20px 0;
+      border: 1px solid #ccc;
+      padding: 28px 24px;
+    }
+    .pipe-node {
+      text-align: center;
+      width: 130px;
+    }
+    .pipe-node .name {
+      font-weight: bold;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+    }
+    .pipe-node .sub {
+      font-size: 11px;
+      color: #555;
+      font-family: Arial, sans-serif;
+      line-height: 1.4;
+      margin-top: 3px;
+    }
+    .pipe-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 4px;
+      margin-bottom: 18px;
+    }
+    .pipe-arrow .line {
+      width: 30px;
+      height: 1px;
+      background: #999;
+      position: relative;
+    }
+    .pipe-arrow .line::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      border-left: 7px solid #999;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+    .pipe-arrow .tag {
+      font-size: 10px;
+      color: #888;
+      font-family: Arial, sans-serif;
+      white-space: nowrap;
+      margin-bottom: 4px;
+    }
+
+    /* Component table */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .comp-table th {
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      padding: 9px 12px;
+      text-align: left;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #111;
+    }
+    .comp-table td {
+      border: 1px solid #ddd;
+      padding: 9px 12px;
+      vertical-align: top;
+      color: #222;
+    }
+    .comp-table tr:nth-child(even) td {
+      background: #fafafa;
+    }
+
+    /* Latency table */
+    .lat-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13px;
+      font-family: Arial, sans-serif;
+    }
+    .lat-table th {
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .lat-table td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      color: #222;
+    }
+    .lat-table tr:last-child td {
+      font-weight: bold;
+      background: #f5f5f5;
+    }
+
+    /* Streaming steps */
+    .steps {
+      margin-top: 16px;
+      border-left: 3px solid #aaa;
+      padding-left: 20px;
+    }
+    .steps .step {
+      margin-bottom: 10px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      color: #222;
+    }
+    .steps .step .num {
+      font-weight: bold;
+      color: #111;
+    }
+    .steps .step .time {
+      color: #888;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+
+    /* Optimizations list */
+    .opt-list {
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+    .opt-list li {
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #222;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 50px;
+      border-top: 1px solid #ccc;
+      padding-top: 16px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #888;
+    }
+
+    @media print {
+      body { padding: 30px 40px; }
+      .section { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="doc-header">
+
+  <h1>AI-Powered Voice Agent </h1>
+  <p class="summary">
+    A fully local, end-to-end pipeline that listens to a caller, understands their intent
+    using a large language model, and responds with natural speech — replacing traditional
+    call agents with no cloud dependency and zero licensing cost.
+  </p>
+  <div class="meta">March 2026 &nbsp;|&nbsp; 100% Open Source &nbsp;|&nbsp; Runs Locally — No Cloud Required</div>
+</div>
+
+<!-- SECTION 1: SUMMARY -->
+<div class="section">
+  <div class="section-number">Section 01</div>
+  <h2>What We Are Building</h2>
+  <p>
+When a user speaks,
+    their voice is transcribed to text by a Speech-to-Text model. That text is passed to a
+    locally running large language model (LLaMA) which generates a context-aware reply.
+    The reply is then converted back to natural-sounding speech using a custom
+    Text-to-Speech model fine-tuned specifically for this project.
+  </p>
+  <p>
+    The final audio is played back to the user — completing one full turn of a voice
+    conversation without any human agent involvement and without any paid cloud service.
+    All processing happens on a single machine. A FastAPI server exposes clean REST
+    endpoints so any frontend or telephony interface can connect to it.
+  </p>
+</div>
+
+<!-- SECTION 2: PIPELINE -->
+<div class="section">
+  <div class="section-number">Section 02</div>
+  <h2>The Voice Pipeline</h2>
+
+  <div class="pipeline">
+    <div class="pipe-node">
+      <div class="name">User</div>
+      <div class="sub">Speaks into<br/>microphone</div>
+    </div>
+
+    <div class="pipe-arrow">
+      <div class="tag">audio file</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="pipe-node">
+      <div class="name">STT</div>
+      <div class="sub">faster-whisper<br/>small model</div>
+    </div>
+
+    <div class="pipe-arrow">
+      <div class="tag">transcript</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="pipe-node">
+      <div class="name">LLM</div>
+      <div class="sub">LLaMA 3.2 3B<br/>via Ollama</div>
+    </div>
+
+    <div class="pipe-arrow">
+      <div class="tag">response text</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="pipe-node">
+      <div class="name">TTS</div>
+      <div class="sub">Custom XTTS v2<br/>fine-tuned model</div>
+    </div>
+
+    <div class="pipe-arrow">
+      <div class="tag">audio reply</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="pipe-node">
+      <div class="name">User</div>
+      <div class="sub">Hears AI<br/>voice reply</div>
+    </div>
+  </div>
+
+  <p style="font-size:12px; color:#666; font-family: Arial, sans-serif;">
+    Each component is a separate module loaded once at server startup. The pipeline
+    runs sequentially or in a streaming fashion (see Section 04).
+  </p>
+</div>
+
+<!-- SECTION 3: COMPONENTS -->
+<div class="section">
+  <div class="section-number">Section 03</div>
+  <h2>Component Breakdown</h2>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Model / Tool</th>
+        <th>Key Details</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Speech-to-Text</strong></td>
+        <td>faster-whisper (small, 74M params)</td>
+        <td>
+          Optimized Whisper runtime, 4x faster than original on CPU.
+          Returns clean punctuated transcript. Handles short conversational clips in 2–4 seconds.
+        </td>
+        <td>Free (MIT)</td>
+      </tr>
+      <tr>
+        <td><strong>Language Model</strong></td>
+        <td>LLaMA 3.2 3B — Q4_K_M quantized GGUF via Ollama</td>
+        <td>
+          Meta's latest small model. Q4 quantization keeps RAM usage at ~2 GB.
+          Generates 8–15 tokens/sec on CPU. Maintains full conversation history
+          for context. System prompt configures it to behave as a call agent.
+        </td>
+        <td>Free (Meta License)</td>
+      </tr>
+      <tr>
+        <td><strong>Text-to-Speech</strong></td>
+        <td>Custom XTTS v2 — fine-tuned on LJSpeech 1.1</td>
+        <td>
+          Built on Coqui XTTS v2 base. Fine-tuned on 13,100 audio clips (~24 hours).
+          GPT-2 backbone (441M parameters), HiFi-GAN neural vocoder.
+          DVAE encoder frozen from base model. Supports voice cloning via a short reference clip.
+        </td>
+        <td>Free (CPML)</td>
+      </tr>
+      <tr>
+        <td><strong>API Backend</strong></td>
+        <td>FastAPI + Uvicorn (Python)</td>
+        <td>
+          Hosts all three models. Exposes endpoints: /voice/process (full pipeline),
+          /voice/transcribe, /voice/chat, /voice/speak. Models load once on startup.
+        </td>
+        <td>Free (MIT)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 4: LATENCY -->
+<div class="section">
+  <div class="section-number">Section 04</div>
+  <h2>Reducing Response Time Per Query</h2>
+
+  <p>
+    Running all three models sequentially on CPU produces a total latency of 20–40 seconds
+    per turn in the naive case. The following optimizations bring the time-to-first-audio down
+    to approximately 6–12 seconds.
+  </p>
+
+  <table class="lat-table">
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>Naive Time (CPU)</th>
+        <th>After Optimization</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Speech-to-Text (5s audio clip)</td>
+        <td>2–4 seconds</td>
+        <td>1–2 seconds (switch to tiny model)</td>
+      </tr>
+      <tr>
+        <td>LLM generation (50 token reply)</td>
+        <td>8–15 seconds total</td>
+        <td>First sentence ready in ~3 seconds (streaming)</td>
+      </tr>
+      <tr>
+        <td>TTS synthesis</td>
+        <td>8–20 seconds</td>
+        <td>Starts before LLM finishes (streaming)</td>
+      </tr>
+      <tr>
+        <td>Total per turn</td>
+        <td>20–40 seconds</td>
+        <td>6–12 seconds to first audio chunk</td>
+      </tr>
+    </tbody>
+  </table>
+
+ </html>

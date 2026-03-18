@@ -1,0 +1,31 @@
+services:
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: voicebot-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+  agent:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    container_name: voicebot-agent
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ljspeech_model:/app/models/tts
+      - xtts_base_cache:/app/xtts_base
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    shm_size: '1g'
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  xtts_base_cache:

@@ -1,0 +1,22 @@
+{
+  "model_args": {
+    "gpt_num_audio_tokens": 1026,
+    "gpt_start_audio_token": 1024,
+    "gpt_stop_audio_token": 1025,
+    "gpt_use_masking_gt_prompt_approach": true,
+    "gpt_use_perceiver_resampler": true
+  },
+  "audio": {
+    "sample_rate": 22050,
+    "output_sample_rate": 24000
+  },
+  "training": {
+    "dataset": "LJSpeech-1.1",
+    "epochs": 6,
+    "batch_size": 2,
+    "lr": 5e-06,
+    "hardware": "RTX 3090  24 GB",
+    "saved_at": "20260214_194229",
+    "tag": "final"
+  }
+}

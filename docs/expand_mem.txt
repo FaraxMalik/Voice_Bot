@@ -1,0 +1,5 @@
+@"
+[wsl2]
+memory=6GB
+swap=12GB
+"@ | Out-File -FilePath "$env:USERPROFILE\.wslconfig" -Encoding UTF8
